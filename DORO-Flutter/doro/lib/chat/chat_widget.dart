@@ -27,35 +27,23 @@ class _ChatWidgetState extends State<ChatWidget> {
       appBar: AppBar(
         backgroundColor: Color(0xFF12654F),
         automaticallyImplyLeading: false,
-        // leading: FlutterFlowIconButton(
-        //   borderColor: Colors.transparent,
-        //   borderRadius: 30,
-        //   borderWidth: 1,
-        //   buttonSize: 60,
-        //   icon: Icon(
-        //     Icons.arrow_back_ios,
-        //     color: Colors.white,
-        //     size: 30,
-        //   ),
-        //   onPressed: () async {
-        //     await Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //       builder: (context) => HomePageWidget(),
-        //       ),
-        //       // PageTransition(
-        //       //   type: PageTransitionType.rightToLeft,
-        //       //   duration: Duration(milliseconds: 150),
-        //       //   reverseDuration: Duration(milliseconds: 150),
-        //       //   child: HomePageWidget(),
-        //       // ),
-        //     );
-        //   },
-        // ),
+        titleSpacing: 0,
+        toolbarHeight: 65,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 32,
+          ),
+          color: Colors.white,
+          onPressed: () async {
+            Navigator.pop(context);
+          },
+        ),
         title: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
+              margin: const EdgeInsets.only(right: 0),
               width: 50,
               height: 50,
               clipBehavior: Clip.antiAlias,
@@ -73,29 +61,25 @@ class _ChatWidgetState extends State<ChatWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 3),
                     child: Text(
                       'Maria UN',
                       textAlign: TextAlign.start,
-                      // style: FlutterFlowTheme.of(context).bodyText1.override(
-                      //       fontFamily: 'Orelega One',
-                      //       color: Colors.white,
-                      //       fontSize: 20,
-                      //       fontWeight: FontWeight.normal,
-                      //       useGoogleFonts: false,
-                      //     ),
+                      style: TextStyle(
+                        fontFamily: 'Orelega One',
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ),
-                  Text(
-                    'Estudiando',
-                    // style: FlutterFlowTheme.of(context).bodyText1.override(
-                    //       fontFamily: 'Orelega One',
-                    //       color: Color(0xD8FFFFFF),
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.normal,
-                    //       useGoogleFonts: false,
-                    //     ),
-                  ),
+                  Text('Estudiando',
+                      style: TextStyle(
+                        fontFamily: 'Orelega One',
+                        color: Color(0xD8FFFFFF),
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      )),
                 ],
               ),
             ),
@@ -116,50 +100,55 @@ class _ChatWidgetState extends State<ChatWidget> {
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.vertical,
                 children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFFC4C4C4),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
-                        child: Text(
-                          'Hello World',
-                          // style:
-                          //     FlutterFlowTheme.of(context).bodyText1.override(
-                          //           fontFamily: 'Orelega One',
-                          //           fontSize: 18,
-                          //           fontWeight: FontWeight.normal,
-                          //           useGoogleFonts: false,
-                          //         ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFC4C4C4),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
+                            child: Text(
+                              'Hello World',
+                              style: TextStyle(
+                                fontFamily: 'Orelega One',
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFFEEEEEE),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
-                        child: Text(
-                          'Hello World',
-                          // style:
-                          //     FlutterFlowTheme.of(context).bodyText1.override(
-                          //           fontFamily: 'Orelega One',
-                          //           fontSize: 18,
-                          //           fontWeight: FontWeight.normal,
-                          //           useGoogleFonts: false,
-                          //         ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFFEEEEEE),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
+                              child: Text(
+                                'Hello World',
+                                style: TextStyle(
+                                  fontFamily: 'Orelega One',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      ]),
                 ],
               ),
             ),
@@ -203,32 +192,30 @@ class _ChatWidgetState extends State<ChatWidget> {
                           contentPadding:
                               EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                         ),
-                        // style: FlutterFlowTheme.of(context).bodyText1.override(
-                        //       fontFamily: 'Orelega One',
-                        //       color: Color(0xCAFFFFFF),
-                        //       fontSize: 20,
-                        //       fontWeight: FontWeight.normal,
-                        //       useGoogleFonts: false,
-                        //     ),
+                        style: TextStyle(
+                          fontFamily: 'Orelega One',
+                          color: Color(0xCAFFFFFF),
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                        ),
                         textAlign: TextAlign.start,
                       ),
                     ),
                   ),
-                  // FlutterFlowIconButton(
-                  //   borderColor: Colors.transparent,
-                  //   borderRadius: 10,
-                  //   borderWidth: 1,
-                  //   buttonSize: 50,
-                  //   fillColor: Color(0xCC454545),
-                  //   icon: Icon(
-                  //     Icons.send,
-                  //     color: Colors.white,
-                  //     size: 30,
-                  //   ),
-                  //   onPressed: () {
-                  //     print('IconButton pressed ...');
-                  //   },
-                  // ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xCC454545),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.send,
+                        size: 32,
+                      ),
+                      color: Colors.white,
+                      onPressed: () {},
+                    ),
+                  ),
                 ],
               ),
             ),
