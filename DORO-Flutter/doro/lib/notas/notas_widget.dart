@@ -1,7 +1,6 @@
-import '../home_page/home_page_widget.dart';
-import 'package:easy_debounce/easy_debounce.dart';
+import 'package:doro/notas/note.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../home_page/home_page_widget.dart';
 
 class NotasWidget extends StatefulWidget {
   const NotasWidget({Key key}) : super(key: key);
@@ -11,15 +10,52 @@ class NotasWidget extends StatefulWidget {
 }
 
 class _NotasWidgetState extends State<NotasWidget> {
-  TextEditingController textController1;
-  TextEditingController textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final List<String> titles = <String>['Titulo 1', 'Titulo 2'];
+  final List<String> descriptions = <String>['Descripcion 1', 'Descripcion 2'];
 
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController(text: 'Titulo');
-    textController2 = TextEditingController(text: 'Hola mundo');
+  }
+
+  createAlertDialog(BuildContext context, int index) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('¿Quieres eliminar esta nota?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('Sí'),
+                onPressed: () {
+                  deleteNoteToList(index);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void deleteNoteToList(int index) {
+    titles.removeAt(index);
+    descriptions.removeAt(index);
+    print(titles);
+    setState(() {});
+  }
+
+  void addNoteToList() {
+    setState(() {
+      titles.add('Titulo');
+      descriptions.add('Descripcion');
+    });
   }
 
   @override
@@ -27,7 +63,7 @@ class _NotasWidgetState extends State<NotasWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0xFF454545),
+        backgroundColor: HomePageWidget.colorOver,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(
@@ -52,12 +88,12 @@ class _NotasWidgetState extends State<NotasWidget> {
         centerTitle: true,
         elevation: 2,
       ),
-      backgroundColor: Color(0xFF454545),
+      backgroundColor: HomePageWidget.colorOver,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print('FloatingActionButton pressed ...');
+          addNoteToList();
         },
-        backgroundColor: Color(0xFF1C161A),
+        backgroundColor: HomePageWidget.colorBackground,
         elevation: 8,
         child: Icon(
           Icons.add,
@@ -73,112 +109,33 @@ class _NotasWidgetState extends State<NotasWidget> {
             Expanded(
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: ListView(
+                child: ListView.builder(
                   padding: EdgeInsets.zero,
                   scrollDirection: Axis.vertical,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Color(0x38030303),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 5, 10, 0),
-                              child: TextFormField(
-                                controller: textController1,
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  'textController1',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
-                                ),
-                                autofocus: true,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  hintText: '[Some hint text...]',
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(4.0),
-                                      topRight: Radius.circular(4.0),
-                                    ),
-                                  ),
-                                ),
-                                style: TextStyle(
-                                  fontFamily: 'Orelega One',
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 10, 5),
-                              child: TextFormField(
-                                  controller: textController2,
-                                  onChanged: (_) => EasyDebounce.debounce(
-                                        'textController2',
-                                        Duration(milliseconds: 2000),
-                                        () => setState(() {}),
-                                      ),
-                                  autofocus: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    hintText: '[Some hint text...]',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 1,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 1,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
-                                  ),
-                                  style: TextStyle(
-                                    fontFamily: 'Orelega One',
-                                    color: Color(0xCFFFFFFF),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.normal,
-                                  )),
-                            ),
-                          ],
-                        ),
+                  itemCount: titles.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final title = titles[index];
+                    return Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: HomePageWidget.colorOver,
                       ),
-                    ),
-                  ],
+                      child: GestureDetector(
+                        onHorizontalDragEnd: (DragEndDetails details) {
+                          if (details.primaryVelocity > 1000) {
+                            createAlertDialog(context, index);
+                          }
+                        },
+                        // onLongPress: () {
+                        //   deleteNoteToList(index);
+                        // },
+                        child: note(TextEditingController(text: titles[index]),
+                            TextEditingController(text: descriptions[index]),
+                            key: ObjectKey(title)),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

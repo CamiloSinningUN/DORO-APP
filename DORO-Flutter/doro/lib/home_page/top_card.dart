@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import '../home_page/home_page_widget.dart';
 
 class top_card extends StatelessWidget {
   const top_card({
@@ -15,7 +16,7 @@ class top_card extends StatelessWidget {
         width: double.infinity,
         height: 225,
         decoration: BoxDecoration(
-          color: Color(0xFF454545),
+          color: HomePageWidget.colorOver,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -30,21 +31,38 @@ class top_card extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      'assets/images/lofi-browsing.gif',
+                      HomePageWidget.gifPath,
                       width: double.infinity,
                       height: 150,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Text(
-                  'Inactivo',
-                  style: TextStyle(
-                    fontFamily: 'Orelega one',
-                    color: Color(0x98FFFFFF),
-                    fontSize: 40,
-                    fontWeight: FontWeight.normal,
-                  ),
+                Stack(
+                  children: [
+                    // The text border
+                    Text(
+                      HomePageWidget.State,
+                      style: TextStyle(
+                        fontFamily: 'Orelega one',
+                        fontSize: 40,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 1.5
+                          ..color = Color(0xff292929),
+                      ),
+                    ),
+                    // The text inside
+                    Text(
+                      HomePageWidget.State,
+                      style: TextStyle(
+                        fontFamily: 'Orelega one',
+                        color: Color(0x98FFFFFF),
+                        fontSize: 40,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

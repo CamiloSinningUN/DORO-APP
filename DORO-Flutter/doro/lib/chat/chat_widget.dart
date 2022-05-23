@@ -1,6 +1,7 @@
 import '../home_page/home_page_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import '../chat/message.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatWidget extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0xFF12654F),
+        backgroundColor: Color(0xFF307473),
         automaticallyImplyLeading: false,
         titleSpacing: 0,
         toolbarHeight: 65,
@@ -50,8 +51,8 @@ class _ChatWidgetState extends State<ChatWidget> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: Image.network(
-                'https://picsum.photos/seed/165/600',
+              child: Image.asset(
+                'assets/images/user.png',
               ),
             ),
             Padding(
@@ -89,7 +90,7 @@ class _ChatWidgetState extends State<ChatWidget> {
         centerTitle: false,
         elevation: 2,
       ),
-      backgroundColor: Color(0xFF1C161A),
+      backgroundColor: HomePageWidget.colorBackground,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
@@ -97,63 +98,16 @@ class _ChatWidgetState extends State<ChatWidget> {
           children: [
             Expanded(
               child: ListView(
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.only(top: 10),
                 scrollDirection: Axis.vertical,
                 children: [
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFC4C4C4),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
-                            child: Text(
-                              'Hello World',
-                              style: TextStyle(
-                                fontFamily: 'Orelega One',
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFEEEEEE),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(7, 7, 7, 7),
-                              child: Text(
-                                'Hello World',
-                                style: TextStyle(
-                                  fontFamily: 'Orelega One',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ]),
+                  message(true, 'Hola Mundo'),
+                  message(false, 'Hello World'),
                 ],
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+              padding: EdgeInsetsDirectional.fromSTEB(5, 10, 10, 10),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -163,6 +117,9 @@ class _ChatWidgetState extends State<ChatWidget> {
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
                       child: TextFormField(
+                        textInputAction: TextInputAction.send,
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
                         controller: textController,
                         onChanged: (_) => EasyDebounce.debounce(
                           'textController',
@@ -173,6 +130,12 @@ class _ChatWidgetState extends State<ChatWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           hintText: 'Escribe aquí...',
+                          hintStyle: TextStyle(
+                            fontFamily: 'Orelega One',
+                            color: Color(0xCAFFFFFF),
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                          ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00000000),
@@ -190,7 +153,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           filled: true,
                           fillColor: Color(0xCD454545),
                           contentPadding:
-                              EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                              EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         ),
                         style: TextStyle(
                           fontFamily: 'Orelega One',

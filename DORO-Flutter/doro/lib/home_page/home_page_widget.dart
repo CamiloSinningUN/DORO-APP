@@ -1,27 +1,71 @@
+import 'package:doro/home_page/chat_list.dart';
 import 'package:flutter/material.dart';
 import '../routes/routes.dart';
 import '../home_page/top_card.dart';
+import '../functions/functions.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key key}) : super(key: key);
+
+  static String State = 'Inactivo';
+  static String gifPath = 'assets/images/lofi-browsing.gif';
+  static Color colorBackground = Color(0xFF1C161A);
+  static Color colorOver = Color(0xFF454545);
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  Icon butIcon = Icon(Icons.play_arrow);
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('¿Quieres dejar de estudiar?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('Sí'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  // Cambiar estado (texto)
+                  HomePageWidget.State = 'Inactivo';
+                  // Cambiar gif
+                  HomePageWidget.gifPath = 'assets/images/lofi-browsing.gif';
+                  // Cambiar colores
+                  HomePageWidget.colorBackground = Color(0xFF1C161A);
+                  HomePageWidget.colorOver = Color(0xFF454545);
+                  // change play icon
+                  butIcon = Icon(Icons.play_arrow);
+                  // put clock off
+                  setState(() {});
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Color(0xFF1C161A),
+      backgroundColor: HomePageWidget.colorBackground,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.of(context).push(createNotas());
         },
-        backgroundColor: Color(0xFF1C161A),
+        backgroundColor: HomePageWidget.colorBackground,
         elevation: 8,
         child: Icon(
           Icons.sticky_note_2_outlined,
@@ -39,146 +83,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   top_card(),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 25, 0, 0),
-                      child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
-                          color: Color(0xFF454545),
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 13, 0, 7),
-                                child: Text(
-                                  'Chats',
-                                  style: TextStyle(
-                                    fontFamily: 'Orelega One',
-                                    color: Color(0xB5FFFFFF),
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: 2,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(71, 0, 0, 0),
-                                ),
-                              ),
-                              Container(
-                                constraints: BoxConstraints(
-                                  maxHeight: double.infinity,
-                                ),
-                                decoration: BoxDecoration(),
-                                child: ListView(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        Navigator.of(context)
-                                            .push(createChat());
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(10, 10, 10, 10),
-                                                child: Container(
-                                                  width: 60,
-                                                  height: 60,
-                                                  clipBehavior: Clip.antiAlias,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Image.network(
-                                                    'https://picsum.photos/seed/907/600',
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(10, 0, 0, 0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 0, 0, 0),
-                                                      child: Text(
-                                                        'Maria UN',
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              'Orelega One',
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text('Hola',
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              'Orelega One',
-                                                          color:
-                                                              Color(0xB6FFFFFF),
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        )),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 20.0),
-                                            width: 10,
-                                            height: 10,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xB6FFFFFF),
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  chat_list(),
                 ],
               ),
             ),
@@ -187,14 +92,30 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 245, 0, 0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (!rYouStudying(HomePageWidget.State)) {
+                      // Cambiar estado (texto)
+                      HomePageWidget.State = 'Estudiando';
+                      // Cambiar gif
+                      HomePageWidget.gifPath = 'assets/images/studying.gif';
+                      // Cambiar colores
+                      HomePageWidget.colorBackground = Color(0xFF12654F);
+                      HomePageWidget.colorOver = Color(0xFF307473);
+                      // change play icon
+                      butIcon = Icon(Icons.pause);
+                      // put clock on
+                      setState(() {});
+                    } else {
+                      createAlertDialog(context);
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: CircleBorder(),
                     primary: Color(0xFF028577),
                     padding: EdgeInsets.all(15),
                   ),
                   child: Icon(
-                    Icons.play_arrow,
+                    butIcon.icon,
                     size: 32,
                   ),
                 ),
