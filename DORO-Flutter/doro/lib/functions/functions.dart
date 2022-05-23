@@ -2,7 +2,7 @@
 // import 'place.dart';
 
 bool rYouStudying(String state) {
-  if (state == "Inactivo") {
+  if (state == "Inactivo" || state == "Descansando") {
     return false;
   } else {
     return true;

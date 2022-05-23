@@ -1,10 +1,12 @@
-import 'package:doro/functions/functions.dart';
 import 'package:flutter/material.dart';
-import '../routes/routes.dart';
 import '../home_page/home_page_widget.dart';
+import '../functions/functions.dart';
+import '../routes/routes.dart';
 
 class chat_list extends StatelessWidget {
-  const chat_list({Key key}) : super(key: key);
+  const chat_list({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
