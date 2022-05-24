@@ -64,24 +64,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             myDuration = Duration(minutes: pomoDes);
           } else {
             pomocont = 0;
+            for (int i = 0; i < 4; i++) {
+              punts[i] = Color(0x4B000000);
+            }
             myDuration = Duration(minutes: pomoStu);
           }
           //activar punto
           //cambiar gif
           HomePageWidget.gifPath = 'assets/images/resting.gif';
           //cambiar color
-          HomePageWidget.colorBackground = Color(0xFF12654F);
-          HomePageWidget.colorOver = Color(0xFF307473);
+          HomePageWidget.colorBackground = Color(0xFF14293E);
+          HomePageWidget.colorOver = Color(0xFF296190);
           //cambiar estado
           HomePageWidget.State = 'Descansando';
           seconds = myDuration.inSeconds;
         } else {
           myDuration = Duration(minutes: pomoStu);
           //cambiar gif
-          HomePageWidget.gifPath = 'assets/images/lofi-browsing.gif';
+          HomePageWidget.gifPath = 'assets/images/studying.gif';
           //cambiar color
-          HomePageWidget.colorBackground = Color(0xFF1C161A);
-          HomePageWidget.colorOver = Color(0xFF454545);
+          HomePageWidget.colorBackground = Color(0xFF12654F);
+          HomePageWidget.colorOver = Color(0xFF307473);
           //cambiar estado
           HomePageWidget.State = 'Estudiando';
           seconds = myDuration.inSeconds;
@@ -124,6 +127,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   // change play icon
                   butIcon = Icon(Icons.play_arrow);
                   // put clock off
+                  pomocont = 0;
+                  for (int i = 0; i < 4; i++) {
+                    punts[i] = Color(0x48000000);
+                  }
                   resetTimer();
                   setState(() {});
                 },
@@ -297,7 +304,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       HomePageWidget.colorOver = Color(0xFF307473);
                       // change play icon
                       butIcon = Icon(Icons.pause);
+                      //put rests in not
                       pomocont = 0;
+                      for (int i = 0; i < 4; i++) {
+                        punts[i] = Color(0x48000000);
+                      }
                       // put clock on
                       startTimer();
 
