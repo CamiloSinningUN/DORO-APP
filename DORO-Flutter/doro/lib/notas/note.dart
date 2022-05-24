@@ -1,19 +1,24 @@
+import 'package:doro/notas/notas_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 
 class note extends StatefulWidget {
   TextEditingController textController1;
   TextEditingController textController2;
-  note(this.textController1, this.textController2, {Key key}) : super(key: key);
+  Function onChanged;
+  note(this.textController1, this.textController2, this.onChanged, {Key key})
+      : super(key: key);
 
   @override
-  _noteState createState() => _noteState(textController1, textController2);
+  _noteState createState() =>
+      _noteState(textController1, textController2, onChanged);
 }
 
 class _noteState extends State<note> {
   TextEditingController textController1;
   TextEditingController textController2;
-  _noteState(this.textController1, this.textController2);
+  Function onChanged;
+  _noteState(this.textController1, this.textController2, this.onChanged);
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +38,11 @@ class _noteState extends State<note> {
               padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 0),
               child: TextFormField(
                 controller: textController1,
-                onChanged: (_) => EasyDebounce.debounce(
-                  'textController1',
-                  Duration(milliseconds: 2000),
-                  () => setState(() {}),
-                ),
+                onChanged: (_) => onChanged(),
                 autofocus: true,
                 obscureText: false,
                 decoration: InputDecoration(
-                  hintText: '[Some hint text...]',
+                  hintText: 'Aquí va el título...',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0x00000000),
@@ -78,15 +79,11 @@ class _noteState extends State<note> {
                   controller: textController2,
                   maxLines: null,
                   enableInteractiveSelection: true,
-                  onChanged: (_) => EasyDebounce.debounce(
-                        'textController2',
-                        Duration(milliseconds: 2000),
-                        () => setState(() {}),
-                      ),
+                  onChanged: (_) => onChanged(),
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
-                    hintText: '[Some hint text...]',
+                    hintText: 'Aquí va la nota...',
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0x00000000),

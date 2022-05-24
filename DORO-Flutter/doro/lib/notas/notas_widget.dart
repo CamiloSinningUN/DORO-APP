@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:doro/notas/note.dart';
 import 'package:flutter/material.dart';
 import '../home_page/home_page_widget.dart';
+import 'package:get_storage/get_storage.dart';
 
 class NotasWidget extends StatefulWidget {
   const NotasWidget({Key key}) : super(key: key);
@@ -10,14 +12,44 @@ class NotasWidget extends StatefulWidget {
 }
 
 class _NotasWidgetState extends State<NotasWidget> {
+  final box = GetStorage();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<String> titles = <String>['Titulo 1', 'Titulo 2'];
-  final List<String> descriptions = <String>['Descripcion 1', 'Descripcion 2'];
+  List<TextEditingController> titles = <TextEditingController>[];
+  List<TextEditingController> descriptions = <TextEditingController>[];
 
-  @override
-  void initState() {
-    super.initState();
+  _NotasWidgetState() {
+    readSavedData();
   }
+
+  void readSavedData() {
+    var value = box.read('titles');
+    print(value);
+    if (value != null) {
+      List<String> temp_titles = value.split(',');
+      temp_titles.removeLast();
+      titles.clear();
+      for (var i = 0; i < temp_titles.length; i++) {
+        titles.add(TextEditingController(text: temp_titles[i]));
+      }
+    }
+    value = box.read('descriptions');
+    print(value);
+    if (value != null) {
+      List<String> temp_descriptions = value.split(',');
+      temp_descriptions.removeLast();
+      descriptions.clear();
+      for (var i = 0; i < temp_descriptions.length; i++) {
+        descriptions.add(TextEditingController(text: temp_descriptions[i]));
+      }
+    }
+  }
+
+  //leer guardado
+  readWithGetStorage(String storageKey) => box.read(storageKey);
+
+  //guardar
+  saveListWithGetStorage(String storageKey, List<dynamic> storageValue) async =>
+      await box.write(storageKey, jsonEncode(storageValue));
 
   createAlertDialog(BuildContext context, int index) {
     return showDialog(
@@ -44,18 +76,43 @@ class _NotasWidgetState extends State<NotasWidget> {
         });
   }
 
+  void saveNotes() {
+    String titlesString = '';
+    String descriptionsString = '';
+    for (int i = 0; i < titles.length; i++) {
+      titlesString += titles[i].text + ',';
+      descriptionsString += descriptions[i].text + ',';
+    }
+    box.remove('titles');
+    box.remove('descriptions');
+    box.write('titles', titlesString);
+    box.write('descriptions', descriptionsString);
+  }
+
   void deleteNoteToList(int index) {
-    titles.removeAt(index);
-    descriptions.removeAt(index);
-    print(titles);
-    setState(() {});
+    setState(() {
+      titles.removeAt(index);
+      descriptions.removeAt(index);
+      saveNotes();
+      readSavedData();
+    });
   }
 
   void addNoteToList() {
     setState(() {
-      titles.add('Titulo');
-      descriptions.add('Descripcion');
+      titles.add(new TextEditingController(text: ''));
+      descriptions.add(new TextEditingController(text: ''));
+      titles.last.addListener(() {
+        saveNotes();
+      });
+      saveNotes();
+      readSavedData();
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -130,8 +187,8 @@ class _NotasWidgetState extends State<NotasWidget> {
                         // onLongPress: () {
                         //   deleteNoteToList(index);
                         // },
-                        child: note(TextEditingController(text: titles[index]),
-                            TextEditingController(text: descriptions[index]),
+                        child: note(
+                            titles[index], descriptions[index], saveNotes,
                             key: ObjectKey(title)),
                       ),
                     );
