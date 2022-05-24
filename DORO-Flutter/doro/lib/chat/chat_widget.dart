@@ -27,7 +27,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
     textController = TextEditingController();
     socket = IO.io(
-        'https://relaxed-frangollo-550a73.netlify.app/',
+        'http://pruepp.herokuapp.com/',
         IO.OptionBuilder()
             .setTransports(['websocket']) // for Flutter or Dart VM
             .build());
