@@ -13,6 +13,8 @@ class ChatWidget extends StatefulWidget {
 
 class _ChatWidgetState extends State<ChatWidget> {
   TextEditingController textController;
+  List<String> myMsgs = <String>['Hola, Como estas?', 'Bien, y tu?'];
+  bool inter = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -26,7 +28,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0xFF307473),
+        backgroundColor: Color(0xFF296190),
         automaticallyImplyLeading: false,
         titleSpacing: 0,
         toolbarHeight: 65,
@@ -74,7 +76,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                       ),
                     ),
                   ),
-                  Text('Estudiando',
+                  Text('Descansando',
                       style: TextStyle(
                         fontFamily: 'Orelega One',
                         color: Color(0xD8FFFFFF),
@@ -97,13 +99,15 @@ class _ChatWidgetState extends State<ChatWidget> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-              child: ListView(
+              child: ListView.builder(
                 padding: EdgeInsets.only(top: 10),
                 scrollDirection: Axis.vertical,
-                children: [
-                  message(true, 'Hola Mundo'),
-                  message(false, 'Hello World'),
-                ],
+                itemCount: myMsgs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final msg = myMsgs[index];
+                  inter = !inter;
+                  return message(inter, msg);
+                },
               ),
             ),
             Padding(
@@ -117,7 +121,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
                       child: TextFormField(
-                        textInputAction: TextInputAction.send,
+                        textInputAction: TextInputAction.newline,
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
                         controller: textController,
@@ -176,7 +180,16 @@ class _ChatWidgetState extends State<ChatWidget> {
                         size: 32,
                       ),
                       color: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {
+                        if (textController.text.isNotEmpty) {
+                          //send message
+                          setState(() {
+                            myMsgs.add(textController.text);
+                            print(textController.text);
+                            textController.text = '';
+                          });
+                        }
+                      },
                     ),
                   ),
                 ],

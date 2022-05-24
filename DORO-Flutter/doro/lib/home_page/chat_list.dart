@@ -104,7 +104,7 @@ class chat_list extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      Text('Hola',
+                                      Text('Bien, y tu?',
                                           style: TextStyle(
                                             fontFamily: 'Orelega One',
                                             color: Color(0xB6FFFFFF),
@@ -121,7 +121,7 @@ class chat_list extends StatelessWidget {
                               width: 10,
                               height: 10,
                               decoration: BoxDecoration(
-                                color: Color(0xff307473),
+                                color: Color(0xff296190),
                                 borderRadius: BorderRadius.circular(50),
                               ),
                             ),
