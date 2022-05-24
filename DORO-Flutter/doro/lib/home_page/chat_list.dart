@@ -94,7 +94,7 @@ class chat_list extends StatelessWidget {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 0),
                                         child: Text(
-                                          'Maria UN',
+                                          'Camilo UN',
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontFamily: 'Orelega One',
@@ -104,7 +104,7 @@ class chat_list extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      Text('Bien, y tu?',
+                                      Text('Hola',
                                           style: TextStyle(
                                             fontFamily: 'Orelega One',
                                             color: Color(0xB6FFFFFF),

@@ -16,7 +16,7 @@ class ChatWidget extends StatefulWidget {
 
 class _ChatWidgetState extends State<ChatWidget> {
   TextEditingController textController;
-  List<String> myMsgs = <String>[];
+  List<String> myMsgs = <String>['Hola'];
   bool inter = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
