@@ -4,7 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import './home_page/home_page_widget.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 void main() async {
   await GetStorage.init();

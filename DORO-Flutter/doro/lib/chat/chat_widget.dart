@@ -1,8 +1,11 @@
+import 'package:doro/functions/functions.dart';
+
 import '../home_page/home_page_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import '../chat/message.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatWidget extends StatefulWidget {
   const ChatWidget({Key key}) : super(key: key);
@@ -17,10 +20,19 @@ class _ChatWidgetState extends State<ChatWidget> {
   bool inter = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  IO.Socket socket;
+
   @override
   void initState() {
     super.initState();
     textController = TextEditingController();
+    socket = IO.io(
+        'https://doro-back.herokuapp.com',
+        IO.OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .build());
+    socket.connect();
+    setupSocketListener();
   }
 
   @override
@@ -187,6 +199,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                             myMsgs.add(textController.text);
                             print(textController.text);
                             textController.text = '';
+                            sendMessage(textController.text);
                           });
                         }
                       },
@@ -199,5 +212,27 @@ class _ChatWidgetState extends State<ChatWidget> {
         ),
       ),
     );
+  }
+
+  //send message
+  void sendMessage(String message) {
+    socket.emit('message', [message]);
+  }
+
+  //receive message
+  void receiveMessage(String message) {
+    if (rYouStudying(HomePageWidget.State)) return;
+    inter = false;
+    setState(() {
+      myMsgs.add(message);
+      inter = true;
+    });
+  }
+
+  //settingup socket listener
+  void setupSocketListener() {
+    socket.on('message', (data) {
+      receiveMessage(data[0]);
+    });
   }
 }

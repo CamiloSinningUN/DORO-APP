@@ -18,25 +18,28 @@ const io = Server(server, {
         origin: `http://localhost:${port}`,
     },
 });
-io.directory = {};
+// io.directory = {};
 
 // requiring handlers
 const messageHandler = require('./handlers/messageHandler');
 
-io.use((socket, next) => {
-    let user = socket.handshake.query.username;
-    if (user) {
-        return next();
-    }
-    return next(new Error('authentication error'));
-});
+// io.use((socket, next) => {
+//     let user = socket.handshake.query.username;
+//     if (user) {
+//         return next();
+//     }
+//     return next(new Error('authentication error'));
+// });
 
 const onDisconnect = (socket) => {
-    delete io.directory[socket.handshake.query.username];
+    // delete io.directory[socket.handshake.query.username];
+    console.log('user disconnected');
 };
 
 const onConnection = (socket) => {
-    io.directory[socket.handshake.query.username] = socket.id;
+    console.log('user connected');
+
+    // io.directory[socket.handshake.query.username] = socket.id;
     socket.on('disconnect', onDisconnect);
     messageHandler(io, socket);
 };
