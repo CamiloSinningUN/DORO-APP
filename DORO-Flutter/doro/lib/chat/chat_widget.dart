@@ -16,8 +16,8 @@ class ChatWidget extends StatefulWidget {
 
 class _ChatWidgetState extends State<ChatWidget> {
   TextEditingController textController;
-  List<String> myMsgs = <String>['Hola, Como estas?', 'Bien, y tu?'];
-  bool inter = false;
+  List<String> myMsgs = <String>[];
+  bool inter = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   IO.Socket socket;
@@ -27,7 +27,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
     textController = TextEditingController();
     socket = IO.io(
-        'https://doro-back.herokuapp.com',
+        'http://pruepp.herokuapp.com/',
         IO.OptionBuilder()
             .setTransports(['websocket']) // for Flutter or Dart VM
             .build());
@@ -117,7 +117,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                 itemCount: myMsgs.length,
                 itemBuilder: (BuildContext context, int index) {
                   final msg = myMsgs[index];
-                  inter = !inter;
+                  // inter = !inter;
                   return message(inter, msg);
                 },
               ),
@@ -194,12 +194,14 @@ class _ChatWidgetState extends State<ChatWidget> {
                       color: Colors.white,
                       onPressed: () {
                         if (textController.text.isNotEmpty) {
+                          inter = true;
                           //send message
                           setState(() {
                             myMsgs.add(textController.text);
                             print(textController.text);
-                            textController.text = '';
+
                             sendMessage(textController.text);
+                            textController.text = '';
                           });
                         }
                       },
@@ -216,7 +218,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   //send message
   void sendMessage(String message) {
-    socket.emit('message', [message]);
+    socket.emit('message', message);
   }
 
   //receive message
@@ -225,14 +227,13 @@ class _ChatWidgetState extends State<ChatWidget> {
     inter = false;
     setState(() {
       myMsgs.add(message);
-      inter = true;
     });
   }
 
   //settingup socket listener
   void setupSocketListener() {
     socket.on('message', (data) {
-      receiveMessage(data[0]);
+      receiveMessage(data);
     });
   }
 }
