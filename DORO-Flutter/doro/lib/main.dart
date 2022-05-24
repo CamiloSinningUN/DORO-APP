@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 import 'package:flutter/material.dart';
 import './home_page/home_page_widget.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 void main() {
   runApp(const MyApp());

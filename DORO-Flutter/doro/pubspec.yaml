@@ -19,6 +19,7 @@ dependencies:
   timeago: 3.1.0
   url_launcher: 6.0.15
   shared_preferences: ^2.0.15
+  socket_io_client: ^1.0.2
 
 
 dev_dependencies:
