@@ -72,6 +72,8 @@ class _chat_listState extends State<chat_list> {
                   Navigator.of(context).pop();
                   setState(() {
                     nameChats.add([nameController.text, idController.text]);
+                    idController.clear();
+                    nameController.clear();
                     // print(nameController.text);
                     // nameController.text = '';
                   });
