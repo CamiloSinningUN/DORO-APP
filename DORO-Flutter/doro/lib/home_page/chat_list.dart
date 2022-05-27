@@ -14,7 +14,12 @@ class chat_list extends StatefulWidget {
 
 class _chat_listState extends State<chat_list> {
   IO.Socket socket;
+  // create a list of nameChats
+  List<List<String>> nameChats = <List<String>>[];
   _chat_listState(this.socket);
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController idController = TextEditingController();
 
   createUserDialog(BuildContext buildContext) {
     return showDialog(
@@ -34,6 +39,7 @@ class _chat_listState extends State<chat_list> {
               Container(
                 margin: EdgeInsets.only(right: 10, left: 10),
                 child: TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -48,6 +54,7 @@ class _chat_listState extends State<chat_list> {
                 margin:
                     EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
                 child: TextField(
+                  controller: idController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -61,8 +68,13 @@ class _chat_listState extends State<chat_list> {
               TextButton(
                 child: Text('Agregar'),
                 onPressed: () {
-                  // enviar username a la base de datos
+                  // add user to the list
                   Navigator.of(context).pop();
+                  setState(() {
+                    nameChats.add([nameController.text, idController.text]);
+                    // print(nameController.text);
+                    // nameController.text = '';
+                  });
                 },
               ),
             ],
@@ -127,15 +139,17 @@ class _chat_listState extends State<chat_list> {
                     maxHeight: double.infinity,
                   ),
                   decoration: BoxDecoration(),
-                  child: ListView(
+                  child: ListView.builder(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    children: [
-                      InkWell(
+                    itemCount: nameChats.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
                         onTap: () async {
                           if (!rYouStudying(HomePageWidget.State)) {
-                            Navigator.of(context).push(createChat(socket));
+                            Navigator.of(context)
+                                .push(createChat(socket, nameChats[index]));
                           }
                         },
                         child: Row(
@@ -170,7 +184,7 @@ class _chat_listState extends State<chat_list> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 0, 0),
                                         child: Text(
-                                          'Camilo UN',
+                                          nameChats[index][0],
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontFamily: 'Orelega One',
@@ -203,8 +217,8 @@ class _chat_listState extends State<chat_list> {
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ],

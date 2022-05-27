@@ -9,15 +9,17 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatWidget extends StatefulWidget {
   final IO.Socket socket;
-  const ChatWidget(this.socket, {Key key}) : super(key: key);
+  final List<String> nameChat;
+  const ChatWidget(this.socket, this.nameChat, {Key key}) : super(key: key);
 
   @override
-  _ChatWidgetState createState() => _ChatWidgetState(socket);
+  _ChatWidgetState createState() => _ChatWidgetState(socket, nameChat);
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
   IO.Socket socket;
-  _ChatWidgetState(this.socket);
+  List<String> nameChat;
+  _ChatWidgetState(this.socket, this.nameChat);
 
   TextEditingController textController;
   List<String> myMsgs = <String>['Hola'];
@@ -76,7 +78,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 3),
                     child: Text(
-                      'Maria UN',
+                      nameChat[0],
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontFamily: 'Orelega One',

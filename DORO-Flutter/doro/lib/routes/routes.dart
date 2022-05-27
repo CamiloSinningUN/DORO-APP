@@ -3,9 +3,10 @@ import '../chat/chat_widget.dart';
 import '../notas/notas_widget.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-Route createChat(IO.Socket socket) {
+Route createChat(IO.Socket socket, List<String> nameChat) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => ChatWidget(socket),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        ChatWidget(socket, nameChat),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0);
       const end = Offset.zero;
