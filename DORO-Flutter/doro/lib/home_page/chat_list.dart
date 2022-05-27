@@ -6,7 +6,7 @@ import '../routes/routes.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class chat_list extends StatefulWidget {
-  final IO.Socket socket;
+  IO.Socket socket;
   chat_list(this.socket, {Key key}) : super(key: key);
 
   @override
@@ -24,14 +24,6 @@ class _chat_listState extends State<chat_list> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController idController = TextEditingController();
-
-  void initState() {
-    super.initState();
-    socket.on('message', (data) {
-      print('message: $data');
-      updateChats(data);
-    });
-  }
 
   saveChats() async {
     //save chats
@@ -129,10 +121,7 @@ class _chat_listState extends State<chat_list> {
                   // add user to the list
                   Navigator.of(context).pop();
                   setState(() {
-                    //add chat at the top
-                    nameChats
-                        .insert(0, [nameController.text, idController.text]);
-                    // nameChats.add([nameController.text, idController.text]);
+                    nameChats.add([nameController.text, idController.text]);
                     idController.clear();
                     nameController.clear();
                     saveChats();
@@ -161,163 +150,137 @@ class _chat_listState extends State<chat_list> {
             ),
             color: HomePageWidget.colorOver,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 13, 0, 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            createIDDialog(context);
-                          },
-                          child: Text(
-                            'Chats',
-                            style: TextStyle(
-                              fontFamily: 'Orelega One',
-                              color: Color(0xB5FFFFFF),
-                              fontSize: 40,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.add_box,
-                            size: 32,
-                          ),
-                          color: Color(0xB5FFFFFF),
-                          onPressed: () {
-                            createUserDialog(context);
-                          },
-                        ),
-                      ],
-                    )),
-                Container(
-                  width: double.infinity,
-                  height: 2,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(71, 0, 0, 0),
-                  ),
-                ),
-                Container(
-                  constraints: BoxConstraints(
-                    maxHeight: double.infinity,
-                  ),
-                  decoration: BoxDecoration(),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: nameChats.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () async {
-                          if (!rYouStudying(HomePageWidget.State)) {
-                            Navigator.of(context)
-                                .push(createChat(socket, nameChats[index]));
-                          }
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 13, 0, 7),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          createIDDialog(context);
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 10, 10, 10),
-                                  child: Container(
-                                    width: 55,
-                                    height: 55,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child:
-                                        Image.asset('assets/images/user.png'),
+                        child: Text(
+                          'Chats',
+                          style: TextStyle(
+                            fontFamily: 'Orelega One',
+                            color: Color(0xB5FFFFFF),
+                            fontSize: 40,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.add_box,
+                          size: 32,
+                        ),
+                        color: Color(0xB5FFFFFF),
+                        onPressed: () {
+                          createUserDialog(context);
+                        },
+                      ),
+                    ],
+                  )),
+              Container(
+                width: double.infinity,
+                height: 2,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(71, 0, 0, 0),
+                ),
+              ),
+              Expanded(
+                // constraints: BoxConstraints(
+                //   maxHeight: double.infinity,
+                // ),
+                // decoration: BoxDecoration(),
+                child: ListView.builder(
+                  // physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  // shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: nameChats.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () async {
+                        if (!rYouStudying(HomePageWidget.State)) {
+                          Navigator.of(context)
+                              .push(createChat(socket, nameChats[index]));
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    10, 10, 10, 10),
+                                child: Container(
+                                  width: 55,
+                                  height: 55,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
+                                  child: Image.asset('assets/images/user.png'),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 0, 0, 0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 0, 0),
-                                        child: Text(
-                                          nameChats[index][0],
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontFamily: 'Orelega One',
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 0),
+                                      child: Text(
+                                        nameChats[index][0],
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontFamily: 'Orelega One',
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.normal,
                                         ),
                                       ),
-                                      Text('Hola',
-                                          style: TextStyle(
-                                            fontFamily: 'Orelega One',
-                                            color: Color(0xB6FFFFFF),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.normal,
-                                          )),
-                                    ],
-                                  ),
+                                    ),
+                                    Text('Hola',
+                                        style: TextStyle(
+                                          fontFamily: 'Orelega One',
+                                          color: Color(0xB6FFFFFF),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(right: 20.0),
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                color: Color(0xff296190),
-                                borderRadius: BorderRadius.circular(50),
                               ),
+                            ],
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 20.0),
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: Color(0xff296190),
+                              borderRadius: BorderRadius.circular(50),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  void updateChats(data) {
-    // data = [message: Strng, senderId: int]
-    int idx =
-        nameChats.indexWhere((element) => element[1] == data[1].toString());
-    print('nameChats:');
-    print(nameChats);
-    print('idx: $idx');
-    if (idx == -1) {
-      print('new chat created');
-      setState(() {
-        nameChats.insert(0, [data[1].toString(), data[1].toString()]);
-      });
-    } else {
-      //set the nameChat from idx to top
-      print('chat already exist');
-      setState(() {
-        List chat = nameChats.removeAt(idx);
-        nameChats.insert(0, chat);
-      });
-    }
-    saveChats();
   }
 }
