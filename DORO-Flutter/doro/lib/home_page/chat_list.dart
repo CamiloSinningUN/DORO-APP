@@ -25,6 +25,14 @@ class _chat_listState extends State<chat_list> {
   TextEditingController nameController = TextEditingController();
   TextEditingController idController = TextEditingController();
 
+  void initState() {
+    super.initState();
+    socket.on('message', (data) {
+      print('message: $data');
+      updateChats(data);
+    });
+  }
+
   saveChats() async {
     //save chats
     String namesString = '';
@@ -121,7 +129,8 @@ class _chat_listState extends State<chat_list> {
                   // add user to the list
                   Navigator.of(context).pop();
                   setState(() {
-                    nameChats.add([nameController.text, idController.text]);
+                    nameChats
+                        .insert(0, [nameController.text, idController.text]);
                     idController.clear();
                     nameController.clear();
                     saveChats();
@@ -282,5 +291,28 @@ class _chat_listState extends State<chat_list> {
         ),
       ),
     );
+  }
+
+  void updateChats(data) {
+    // data = [message: Strng, senderId: int]
+    int idx =
+        nameChats.indexWhere((element) => element[1] == data[1].toString());
+    print('nameChats:');
+    print(nameChats);
+    print('idx: $idx');
+    if (idx == -1) {
+      print('new chat created');
+      setState(() {
+        nameChats.insert(0, [data[1].toString(), data[1].toString()]);
+      });
+    } else {
+      //set the nameChat from idx to top
+      print('chat already exist');
+      setState(() {
+        List chat = nameChats.removeAt(idx);
+        nameChats.insert(0, chat);
+      });
+    }
+    saveChats();
   }
 }
