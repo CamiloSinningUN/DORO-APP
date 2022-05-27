@@ -16,6 +16,7 @@ class _NotasWidgetState extends State<NotasWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<TextEditingController> titles = <TextEditingController>[];
   List<TextEditingController> descriptions = <TextEditingController>[];
+  ScrollController _scrollController = ScrollController();
 
   _NotasWidgetState() {
     readSavedData();
@@ -149,6 +150,11 @@ class _NotasWidgetState extends State<NotasWidget> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           addNoteToList();
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         },
         backgroundColor: HomePageWidget.colorBackground,
         elevation: 8,
@@ -167,6 +173,7 @@ class _NotasWidgetState extends State<NotasWidget> {
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                 child: ListView.builder(
+                  controller: _scrollController,
                   padding: EdgeInsets.zero,
                   scrollDirection: Axis.vertical,
                   itemCount: titles.length,

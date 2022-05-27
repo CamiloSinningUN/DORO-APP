@@ -18,6 +18,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   TextEditingController textController;
   List<String> myMsgs = <String>['Hola'];
   bool inter = true;
+  ScrollController _scrollController = ScrollController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   IO.Socket socket;
@@ -112,6 +113,7 @@ class _ChatWidgetState extends State<ChatWidget> {
           children: [
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 padding: EdgeInsets.only(top: 10),
                 scrollDirection: Axis.vertical,
                 itemCount: myMsgs.length,
@@ -199,7 +201,11 @@ class _ChatWidgetState extends State<ChatWidget> {
                           setState(() {
                             myMsgs.add(textController.text);
                             print(textController.text);
-
+                            _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              curve: Curves.easeOut,
+                              duration: const Duration(milliseconds: 300),
+                            );
                             sendMessage(textController.text);
                             textController.text = '';
                           });
@@ -227,6 +233,11 @@ class _ChatWidgetState extends State<ChatWidget> {
     inter = false;
     setState(() {
       myMsgs.add(message);
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
     });
   }
 

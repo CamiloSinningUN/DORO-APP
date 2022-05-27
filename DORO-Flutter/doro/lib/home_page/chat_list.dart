@@ -3,10 +3,67 @@ import '../home_page/home_page_widget.dart';
 import '../functions/functions.dart';
 import '../routes/routes.dart';
 
-class chat_list extends StatelessWidget {
-  const chat_list({
-    Key key,
-  }) : super(key: key);
+class chat_list extends StatefulWidget {
+  const chat_list({Key key}) : super(key: key);
+
+  @override
+  _chat_listState createState() => _chat_listState();
+}
+
+class _chat_listState extends State<chat_list> {
+  createUserDialog(BuildContext buildContext) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Escriba el username y el id de la persona que desea agregar:',
+              // style: TextStyle(
+              //   fontFamily: 'Orelega One',
+              //   color: Colors.black,
+              //   fontSize: 20,
+              //   fontWeight: FontWeight.normal,
+              // ),
+            ),
+            actions: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 10, left: 10),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    labelText: 'Username',
+                  ),
+                  onChanged: (value) {
+                    print(value);
+                  },
+                ),
+              ),
+              Container(
+                margin:
+                    EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    labelText: 'Id',
+                  ),
+                  onChanged: (value) {
+                    print(value);
+                  },
+                ),
+              ),
+              TextButton(
+                child: Text('Agregar'),
+                onPressed: () {
+                  // enviar username a la base de datos
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +85,31 @@ class chat_list extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 13, 0, 7),
-                  child: Text(
-                    'Chats',
-                    style: TextStyle(
-                      fontFamily: 'Orelega One',
-                      color: Color(0xB5FFFFFF),
-                      fontSize: 40,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 13, 0, 7),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Chats',
+                          style: TextStyle(
+                            fontFamily: 'Orelega One',
+                            color: Color(0xB5FFFFFF),
+                            fontSize: 40,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.add_box,
+                            size: 32,
+                          ),
+                          color: Color(0xB5FFFFFF),
+                          onPressed: () {
+                            createUserDialog(context);
+                          },
+                        ),
+                      ],
+                    )),
                 Container(
                   width: double.infinity,
                   height: 2,

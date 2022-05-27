@@ -3,6 +3,7 @@ import 'package:doro/home_page/chat_list.dart';
 import 'package:flutter/material.dart';
 import '../routes/routes.dart';
 import '../functions/functions.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomePageWidget extends StatefulWidget {
@@ -22,6 +23,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   int pomocont = 0;
   int pomoStu;
   int pomoDes;
+  final box = GetStorage();
   Timer countdownTimer;
   Duration myDuration;
   int seconds;
@@ -31,9 +33,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     Color(0x4B000000),
     Color(0x4B000000)
   ];
+
+  // look for an id from storage
+  void getId(var id) {
+    int ID;
+    if (id != null) {
+      try {
+        ID = int.parse(id);
+      } catch (e) {
+        print('error');
+      }
+    } else {
+      ID = -1;
+    }
+    //aquí tu parte
+  }
+
   _HomePageWidgetState(this.pomoStu, this.pomoDes) {
     myDuration = Duration(minutes: pomoStu);
     seconds = myDuration.inSeconds;
+    getId(box.read('id'));
   }
 
   void startTimer() {
