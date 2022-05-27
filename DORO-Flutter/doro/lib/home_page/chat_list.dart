@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import '../home_page/home_page_widget.dart';
 import '../functions/functions.dart';
 import '../routes/routes.dart';
@@ -13,13 +16,67 @@ class chat_list extends StatefulWidget {
 }
 
 class _chat_listState extends State<chat_list> {
+  final box = GetStorage();
   IO.Socket socket;
   // create a list of nameChats
   List<List<String>> nameChats = <List<String>>[];
-  _chat_listState(this.socket);
+  _chat_listState(this.socket) {
+    readChats();
+  }
 
   TextEditingController nameController = TextEditingController();
   TextEditingController idController = TextEditingController();
+
+  saveChats() async {
+    //save chats
+    String namesString = '';
+    String idsString = '';
+    print(nameChats);
+    for (int i = 0; i < nameChats.length; i++) {
+      namesString += nameChats[i][0] + ',';
+      idsString += nameChats[i][1] + ',';
+    }
+    box.remove('nameChats');
+    box.remove('idChats');
+    box.write('nameChats', namesString);
+    box.write('idChats', idsString);
+  }
+
+  readChats() async {
+    var value = box.read('nameChats');
+    print(value);
+    if (value != null) {
+      List<String> temp_names = value.split(',');
+      temp_names.removeLast();
+      nameChats.clear();
+      value = box.read('idChats');
+      List<String> temp_ids = value.split(',');
+      temp_ids.removeLast();
+      for (var i = 0; i < temp_names.length; i++) {
+        nameChats.add([temp_names[i], temp_ids[i]]);
+      }
+    }
+  }
+
+  createIDDialog(BuildContext buildContext) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Tu id es: ${box.read('id')}',
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   createUserDialog(BuildContext buildContext) {
     return showDialog(
@@ -45,9 +102,6 @@ class _chat_listState extends State<chat_list> {
                         borderRadius: BorderRadius.circular(10)),
                     labelText: 'Username',
                   ),
-                  onChanged: (value) {
-                    print(value);
-                  },
                 ),
               ),
               Container(
@@ -60,9 +114,7 @@ class _chat_listState extends State<chat_list> {
                         borderRadius: BorderRadius.circular(10)),
                     labelText: 'Id',
                   ),
-                  onChanged: (value) {
-                    print(value);
-                  },
+                  onChanged: (value) {},
                 ),
               ),
               TextButton(
@@ -74,6 +126,7 @@ class _chat_listState extends State<chat_list> {
                     nameChats.add([nameController.text, idController.text]);
                     idController.clear();
                     nameController.clear();
+                    saveChats();
                     // print(nameController.text);
                     // nameController.text = '';
                   });
@@ -108,13 +161,18 @@ class _chat_listState extends State<chat_list> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Chats',
-                          style: TextStyle(
-                            fontFamily: 'Orelega One',
-                            color: Color(0xB5FFFFFF),
-                            fontSize: 40,
-                            fontWeight: FontWeight.normal,
+                        GestureDetector(
+                          onTap: () {
+                            createIDDialog(context);
+                          },
+                          child: Text(
+                            'Chats',
+                            style: TextStyle(
+                              fontFamily: 'Orelega One',
+                              color: Color(0xB5FFFFFF),
+                              fontSize: 40,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
                         IconButton(
