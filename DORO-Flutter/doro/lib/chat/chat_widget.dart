@@ -8,31 +8,28 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatWidget extends StatefulWidget {
-  const ChatWidget({Key key}) : super(key: key);
+  final IO.Socket socket;
+  const ChatWidget(this.socket, {Key key}) : super(key: key);
 
   @override
-  _ChatWidgetState createState() => _ChatWidgetState();
+  _ChatWidgetState createState() => _ChatWidgetState(socket);
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
+  IO.Socket socket;
+  _ChatWidgetState(this.socket);
+
   TextEditingController textController;
   List<String> myMsgs = <String>['Hola'];
   bool inter = true;
   ScrollController _scrollController = ScrollController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  IO.Socket socket;
-
   @override
   void initState() {
     super.initState();
     textController = TextEditingController();
-    socket = IO.io(
-        'http://pruepp.herokuapp.com/',
-        IO.OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
-            .build());
-    socket.connect();
+
     setupSocketListener();
   }
 

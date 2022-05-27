@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../chat/chat_widget.dart';
 import '../notas/notas_widget.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-Route createChat() {
+Route createChat(IO.Socket socket) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const ChatWidget(),
+    pageBuilder: (context, animation, secondaryAnimation) => ChatWidget(socket),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0);
       const end = Offset.zero;

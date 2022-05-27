@@ -5,6 +5,7 @@ import '../routes/routes.dart';
 import '../functions/functions.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key key}) : super(key: key);
@@ -33,20 +34,39 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     Color(0x4B000000),
     Color(0x4B000000)
   ];
+  IO.Socket socket;
 
   // look for an id from storage
   void getId(var id) {
     int ID;
     if (id != null) {
       try {
-        ID = int.parse(id);
+        ID = id;
       } catch (e) {
         print('error');
+        print(e);
       }
     } else {
       ID = -1;
     }
     //aquí tu parte
+    socket = IO.io(
+        'http://pruepp.herokuapp.com/',
+        IO.OptionBuilder().setTransports(['websocket']).setQuery(
+                {'userId': ID}) // for Flutter or Dart VM
+            .build());
+
+    socket.on('connect', (_) {
+      print('connected');
+
+      if (ID == -1) {
+        socket.once('userId', (data) {
+          print('newID');
+          print(data);
+          box.write('id', data);
+        });
+      }
+    });
   }
 
   _HomePageWidgetState(this.pomoStu, this.pomoDes) {
@@ -303,7 +323,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ),
                     ),
                   ),
-                  chat_list()
+                  chat_list(socket)
                 ],
               ),
             ),

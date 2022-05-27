@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import '../home_page/home_page_widget.dart';
 import '../functions/functions.dart';
 import '../routes/routes.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class chat_list extends StatefulWidget {
-  const chat_list({Key key}) : super(key: key);
+  IO.Socket socket;
+  chat_list(this.socket, {Key key}) : super(key: key);
 
   @override
-  _chat_listState createState() => _chat_listState();
+  _chat_listState createState() => _chat_listState(this.socket);
 }
 
 class _chat_listState extends State<chat_list> {
+  IO.Socket socket;
+  _chat_listState(this.socket);
+
   createUserDialog(BuildContext buildContext) {
     return showDialog(
         context: context,
@@ -130,7 +135,7 @@ class _chat_listState extends State<chat_list> {
                       InkWell(
                         onTap: () async {
                           if (!rYouStudying(HomePageWidget.State)) {
-                            Navigator.of(context).push(createChat());
+                            Navigator.of(context).push(createChat(socket));
                           }
                         },
                         child: Row(
