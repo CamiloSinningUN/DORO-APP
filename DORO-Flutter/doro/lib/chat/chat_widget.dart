@@ -22,8 +22,11 @@ class _ChatWidgetState extends State<ChatWidget> {
   _ChatWidgetState(this.socket, this.nameChat);
 
   TextEditingController textController;
-  List<String> myMsgs = <String>['Hola'];
-  bool inter = true;
+  List<List> myMsgs = <List>[
+    ['Hola', true]
+  ];
+
+  // bool inter = true;
   ScrollController _scrollController = ScrollController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -31,8 +34,8 @@ class _ChatWidgetState extends State<ChatWidget> {
   void initState() {
     super.initState();
     textController = TextEditingController();
-
-    setupSocketListener();
+    askForMessages();
+    setupMessageListener();
   }
 
   @override
@@ -122,9 +125,9 @@ class _ChatWidgetState extends State<ChatWidget> {
                     scrollDirection: Axis.vertical,
                     itemCount: myMsgs.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final msg = myMsgs[index];
+                      final msg = myMsgs[index][0];
                       // inter = !inter;
-                      return message(inter, msg);
+                      return message(myMsgs[index][1], msg);
                     },
                   ),
                 ),
@@ -200,10 +203,10 @@ class _ChatWidgetState extends State<ChatWidget> {
                           color: Colors.white,
                           onPressed: () {
                             if (textController.text.isNotEmpty) {
-                              inter = true;
+                              // inter = true;
                               //send message
                               setState(() {
-                                myMsgs.add(textController.text);
+                                myMsgs.add([textController.text, true]);
                                 print(textController.text);
                                 _scrollController.animateTo(
                                   _scrollController.position.maxScrollExtent,
@@ -232,11 +235,11 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 
   //receive message
-  void receiveMessage(String message) {
+  void receiveMessage(String message, {bool fromMe = false}) {
     if (rYouStudying(HomePageWidget.State)) return;
-    inter = false;
     setState(() {
-      myMsgs.add(message);
+      // inter = fromMe;
+      myMsgs.add([message, fromMe]);
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         curve: Curves.easeOut,
@@ -258,7 +261,22 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 
   //settingup socket listener
-  void setupSocketListener() {
+  void setupMessageListener() {
     socket.on('message', onReceiveMessage);
+  }
+
+  void askForMessages() {
+    socket.emitWithAck('askForMessages', int.parse(nameChat[1]), ack: (data) {
+      print('askformessages, data = $data');
+      if (data[0] == 'ok') {
+        data.removeAt(0);
+        for (var i = 0; i < data.length; i++) {
+          // every message is a list of [message, fromMe]
+          receiveMessage(data[i][0], fromMe: data[i][1]);
+        }
+      } else {
+        print('no hay mensajes');
+      }
+    });
   }
 }
