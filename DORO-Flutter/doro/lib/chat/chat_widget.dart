@@ -223,7 +223,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   //send message
   void sendMessage(String message) {
-    socket.emit('message', message);
+    socket.emit('message', [message, nameChat[1]]);
   }
 
   //receive message
@@ -242,8 +242,10 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   //settingup socket listener
   void setupSocketListener() {
-    socket.on('message', (data) {
-      receiveMessage(data);
+    socket.on('message', ([data, sender]) {
+      if (sender == nameChat[1]) {
+        receiveMessage(data);
+      }
     });
   }
 }
