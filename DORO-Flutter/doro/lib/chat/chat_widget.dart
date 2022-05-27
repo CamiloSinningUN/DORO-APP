@@ -242,9 +242,14 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   //settingup socket listener
   void setupSocketListener() {
-    socket.on('message', ([data, sender]) {
+    socket.on('message', (data) {
+      print('mensaje');
+      print(data);
+      dynamic message = data[0];
+      dynamic sender = data[1];
+      print(sender);
       if (sender == int.parse(nameChat[1])) {
-        receiveMessage(data);
+        receiveMessage(message);
       }
     });
   }
