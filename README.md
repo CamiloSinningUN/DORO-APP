@@ -2,7 +2,7 @@
 
 Mobile application, which provides the user a platform in which he can develop his study sessions with the pomodoro method, plus a chat which allows you to see the current state of yours contacts and stop notifications when your are studying.
 
-## preview
+## Preview
 
 ![Sin título (Póster)](https://user-images.githubusercontent.com/61607058/173731711-3b51c65a-04f0-4d3f-8e4a-a3881aa7d293.png)
 
